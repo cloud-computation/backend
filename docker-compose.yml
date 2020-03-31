@@ -1,10 +1,9 @@
-version: "3"
+version: "2"
 
 services:
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: unless-stopped
     ports:
       - "1656:8080"
