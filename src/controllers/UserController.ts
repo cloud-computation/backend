@@ -1,7 +1,8 @@
 import { User } from "../models/User";
-import {ISignInData, ISignUpData} from "../entity";
+import { ISignInData, ISignUpData, IUser } from "../entity";
 import { Response } from "express";
-import {sendErrorMessage, sendSuccessMessage} from "../ustils";
+import { sendErrorMessage, sendSuccessMessage } from "../ustils";
+import { Request } from "express";
 
 export class UserController {
     private readonly user = new User();
@@ -25,14 +26,41 @@ export class UserController {
             .forgotPassword(data)
             .then((res) => sendSuccessMessage(response, res))
             .catch((error) => sendErrorMessage(error, response));
-
     }
 
     login(token: string, response: Response): void {
         this.user
-            .login(token)
+            .getUser(token)
             .then((res) => sendSuccessMessage(response, res))
             .catch((error) => sendErrorMessage(error, response));
-
     }
+
+    getUser(token: string, response: Response): void {
+        this.user
+            .getUser(token)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
+
+    updateUser(token: string, user: Partial<IUser>, response: Response): void {
+        this.user
+            .updateUser(token, user)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
+
+    uploadAvatar(request: Request, response: Response): void {
+        this.user
+            .uploadAvatar(request)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
+
+    deleteAvatar(token: string, response: Response): void {
+        this.user
+            .deleteAvatar(token)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
+
 }

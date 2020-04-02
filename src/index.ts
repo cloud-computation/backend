@@ -2,7 +2,7 @@ import * as express from "express";
 import * as http from "http";
 import * as dotenv from "dotenv";
 import { Database } from "./services";
-import { auth } from "./routes";
+import { auth, user } from "./routes";
 import { NextFunction, Request, Response } from "express";
 import { corsMiddleware, errorLogger } from "./middleware";
 import { APIError } from "./errors";
@@ -29,6 +29,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/auth", auth);
+app.use("/user", user);
 
 app.get("/", (req, res, next) => {
     res.send(`I'm alive`);

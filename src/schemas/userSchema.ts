@@ -12,4 +12,5 @@ export const userSchema: ModelAttributes = {
     email: { type: sequelize.STRING },
     avatar: { type: sequelize.STRING },
     password: { type: sequelize.STRING },
+    ident: { type: sequelize.STRING },
 };

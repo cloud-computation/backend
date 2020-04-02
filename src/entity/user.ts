@@ -4,4 +4,7 @@ export interface IUser {
     email: string;
     avatar?: string;
     password: string;
+    ident: string;
 }
+
+export type TUserClient = Omit<IUser, "ident" | "password">;

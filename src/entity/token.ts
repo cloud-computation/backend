@@ -5,5 +5,5 @@ export interface IToken {
 
 export interface ITokenData {
     userId: number;
-    email: string;
+    userIdent: string;
 }

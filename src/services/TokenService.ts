@@ -24,7 +24,7 @@ export class TokenService {
     }
 
     getTokenData(tokenString: string, tokenSecret: string, cryptTokenSecret: string): ITokenData {
-        let data: ITokenData = { email: "", userId: 0 };
+        let data: ITokenData = { userIdent: "", userId: 0 };
         const decryptedToken = TokenService.decryptToken(tokenString, cryptTokenSecret);
         jsonwebtoken.verify(
             decryptedToken,
