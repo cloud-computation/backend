@@ -1,7 +1,7 @@
 import { IRepository } from "./IRepository";
 import { Database } from "../services";
 import { Model, ModelAttributes } from "sequelize";
-import { FindOptions, ModelCtor } from "sequelize/types/lib/model";
+import { ModelCtor } from "sequelize/types/lib/model";
 
 export class Repository<T extends object> implements IRepository<T> {
     private readonly database = new Database();
@@ -12,8 +12,8 @@ export class Repository<T extends object> implements IRepository<T> {
         this.model = this.database.getConnection().models[modelName];
     }
 
-    async getList(params?: FindOptions): Promise<T[]> {
-        const response = await this.model.findAll(params);
+    async getList(params?: Partial<T>): Promise<T[]> {
+        const response = await this.model.findAll({ where: { ...params } });
         return response.map((item) => JSON.parse(JSON.stringify(item)));
     }
 
@@ -21,8 +21,8 @@ export class Repository<T extends object> implements IRepository<T> {
         await this.model.create(data);
     }
 
-    async getOne(params: FindOptions): Promise<T> {
-        const response = await this.model.findOne(params);
+    async getOne(params: Partial<T>): Promise<T> {
+        const response = await this.model.findOne({ where: { ...params } });
         return JSON.parse(JSON.stringify(response));
     }
 
@@ -31,7 +31,7 @@ export class Repository<T extends object> implements IRepository<T> {
         return JSON.parse(JSON.stringify(response));
     }
 
-    async update(id: number, data: T): Promise<void> {
+    async update(id: number, data: Partial<T>): Promise<void> {
         await this.model.update(data, {
             where: {
                 id,

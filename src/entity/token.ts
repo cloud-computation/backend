@@ -4,6 +4,6 @@ export interface IToken {
 }
 
 export interface ITokenData {
-    userId: string;
-    login: string;
+    userId: number;
+    email: string;
 }

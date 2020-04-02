@@ -1,6 +1,6 @@
 import * as jsonwebtoken from "jsonwebtoken";
 import * as CryptoJS from "crypto-js";
-import { IToken, ITokenData } from "../entity";
+import { ITokenData } from "../entity";
 import * as dotenv from "dotenv";
 import { errorList } from "../errors";
 
@@ -11,9 +11,6 @@ export class TokenService {
 
     setToken(data: ITokenData): void {
         const accessToken = jsonwebtoken.sign(data, process.env.SECRET_ACCESS_TOKEN, {
-            algorithm: process.env.TOKEN_ALGORITHM as jsonwebtoken.Algorithm,
-        });
-        const refreshToken = jsonwebtoken.sign(data, process.env.SECRET_REFRESH_TOKEN, {
             algorithm: process.env.TOKEN_ALGORITHM as jsonwebtoken.Algorithm,
         });
         this.token = TokenService.cryptToken(
@@ -27,7 +24,7 @@ export class TokenService {
     }
 
     getTokenData(tokenString: string, tokenSecret: string, cryptTokenSecret: string): ITokenData {
-        let data: ITokenData = { login: "", userId: "" };
+        let data: ITokenData = { email: "", userId: 0 };
         const decryptedToken = TokenService.decryptToken(tokenString, cryptTokenSecret);
         jsonwebtoken.verify(
             decryptedToken,

@@ -37,4 +37,5 @@ export const errorList = {
     FakeTypeFile: new APIError(EHTTPStatus.BAD, "Настоящий тип файла и его расширение не сходятся.", 15),
     wrongEmailContact: new APIError(EHTTPStatus.BAD, "Невалидный E-mail", 16),
     emailAlreadyExist: new APIError(EHTTPStatus.BAD, "Данный E-mail уже зарегистрирован", 17),
+    loginAlreadyExist: new APIError(EHTTPStatus.BAD, "Данный логин уже зарегистрирован", 17),
 };
