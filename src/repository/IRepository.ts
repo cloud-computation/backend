@@ -1,5 +1,5 @@
 export interface IRepository<T> {
-    getList(params: Partial<T>): Promise<T[]>;
+    getList(params: object): Promise<T[]>;
 
     getOneById(id: number): Promise<T>;
 
@@ -15,9 +15,5 @@ export interface IRepository<T> {
 
     deleteByField?(params: Partial<T>): Promise<void>;
 
-    exists(params: Partial<T>): Promise<boolean>;
-
     count(params: Partial<T>): Promise<number>;
-
-    deleteBy(params: Partial<T>): Promise<void>;
 }
