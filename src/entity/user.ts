@@ -8,3 +8,9 @@ export interface IUser {
 }
 
 export type TUserClient = Omit<IUser, "ident" | "password">;
+
+export interface IChangePassword {
+    password: string;
+    newPassword: string;
+    repeatPassword: string;
+}

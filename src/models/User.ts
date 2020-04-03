@@ -1,4 +1,4 @@
-import { ISignInData, ISignUpData, IUser, TUserClient } from "../entity";
+import { IChangePassword, ISignInData, ISignUpData, IUser, TUserClient } from "../entity";
 import { Repository } from "../repository/Repository";
 import { cryptPassword } from "../ustils";
 import { userSchema } from "../schemas";
@@ -116,5 +116,14 @@ export class User {
             await this.repository.update(userId, { avatar: null });
         }
         return this.getUser(token);
+    }
+
+    async changePassword(token: string, data: IChangePassword): Promise<void> {
+        const { userId } = this.tokenService.getTokenData(
+            token,
+            process.env.SECRET_ACCESS_TOKEN,
+            process.env.CRYPT_ACCESS_TOKEN_SECRET,
+        );
+        await this.repository.update(userId, { password: cryptPassword(data.newPassword) });
     }
 }

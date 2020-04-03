@@ -1,5 +1,5 @@
 import { User } from "../models/User";
-import { ISignInData, ISignUpData, IUser } from "../entity";
+import {IChangePassword, ISignInData, ISignUpData, IUser} from "../entity";
 import { Response } from "express";
 import { sendErrorMessage, sendSuccessMessage } from "../ustils";
 import { Request } from "express";
@@ -63,4 +63,10 @@ export class UserController {
             .catch((error) => sendErrorMessage(error, response));
     }
 
+    changePassword(token: string, data: IChangePassword, response: Response): void {
+        this.user
+            .changePassword(token, data)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
 }
