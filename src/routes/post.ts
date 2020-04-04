@@ -1,23 +1,20 @@
 import * as express from "express";
 import { Request, Response } from "express";
 import { PostController } from "../controllers";
-import {checkDeletePost, checkExistingUserByToken, checkPost} from "../middleware";
+import { checkDeletePost, checkExistingUserByToken, checkPost } from "../middleware";
 
 const router = express.Router();
 
 enum Actions {
     POST = "",
-    POST_ID = "/:id"
+    POST_ID = "/:id",
 }
 
 const controller = new PostController();
 
-router.get(
-    Actions.POST,
-    (req: Request, res: Response) => {
-        controller.getPostList(res);
-    },
-);
+router.get(Actions.POST, (req: Request, res: Response) => {
+    controller.getPostList(res);
+});
 
 router.post(
     Actions.POST,
@@ -28,6 +25,10 @@ router.post(
         controller.createPost(token, req.body, res);
     },
 );
+
+router.get(Actions.POST_ID, (req: Request, res: Response) => {
+    controller.getPost(Number(req.params.id), res);
+});
 
 router.put(
     Actions.POST_ID,

@@ -15,6 +15,10 @@ export class Post {
         return await this.repository.getList();
     }
 
+    async getPost(id: number): Promise<IPost> {
+        return await this.repository.getOneById(id);
+    }
+
     async createPost(token: string, data: ICreatePost): Promise<{ id: number }> {
         const { userId } = this.tokenService.getTokenData(
             token,

@@ -14,6 +14,13 @@ export class PostController {
             .catch((error) => sendErrorMessage(error, response));
     }
 
+    getPost(id: number, response: Response): void {
+        this.post
+            .getPost(id)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
+
     createPost(token: string, data: ICreatePost, response: Response): void {
         this.post
             .createPost(token, data)
