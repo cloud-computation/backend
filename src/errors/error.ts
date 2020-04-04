@@ -40,4 +40,5 @@ export const errorList = {
     loginAlreadyExist: new APIError(EHTTPStatus.BAD, "Данный логин уже зарегистрирован", 18),
     postAlreadyExist: new APIError(EHTTPStatus.BAD, "Пост с таким именем уже существует", 19),
     postCanBeDeletedByOwner: new APIError(EHTTPStatus.BAD, "Пост может удалить только создатель поста", 20),
+    postCanBeEditedByOwner: new APIError(EHTTPStatus.BAD, "Пост может редактировать только создатель поста", 21),
 };

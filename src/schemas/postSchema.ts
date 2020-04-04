@@ -11,4 +11,5 @@ export const postSchema: ModelAttributes = {
     authorId: { type: sequelize.NUMBER },
     title: { type: sequelize.STRING },
     text: { type: sequelize.STRING },
+    background: { type: sequelize.STRING },
 };

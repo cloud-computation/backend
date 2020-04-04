@@ -3,6 +3,7 @@ export interface IPost {
     authorId: number;
     title: string;
     text: string;
+    background: string;
 }
 
 export interface ICreatePost {
