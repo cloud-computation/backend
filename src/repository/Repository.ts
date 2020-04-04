@@ -17,7 +17,7 @@ export class Repository<T extends object> implements IRepository<T> {
         return response.map((item) => JSON.parse(JSON.stringify(item)));
     }
 
-    async add(data: T): Promise<void> {
+    async add(data: Partial<T>): Promise<void> {
         await this.model.create(data);
     }
 
