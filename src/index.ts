@@ -6,6 +6,7 @@ import { auth, user } from "./routes";
 import { NextFunction, Request, Response } from "express";
 import { corsMiddleware, errorLogger } from "./middleware";
 import { APIError } from "./errors";
+import {post} from "./routes/post";
 
 const app = express();
 const server = http.createServer(app);
@@ -30,6 +31,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use("/auth", auth);
 app.use("/user", user);
+app.use("/post", post);
 
 app.get("/", (req, res, next) => {
     res.send(`I'm alive`);
