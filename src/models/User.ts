@@ -1,7 +1,7 @@
-import { IChangePassword, ISignInData, ISignUpData, IUser, TUserClient } from "../entity";
+import { IChangePassword, IPost, ISignInData, ISignUpData, IUser, TUserClient } from "../entity";
 import { Repository } from "../repository/Repository";
 import { cryptPassword } from "../ustils";
-import { userSchema } from "../schemas";
+import { postSchema, userSchema } from "../schemas";
 import { FileService, S3, TokenService } from "../services";
 import { v4 } from "uuid";
 import { Sender } from "../services/Sender";
@@ -15,6 +15,7 @@ dotenv.config({ path: ".env" });
 
 export class User {
     private readonly repository = new Repository<IUser>("user", userSchema, "users");
+    private readonly postRepository = new Repository<IPost>("post", postSchema, "posts");
     private readonly tokenService = new TokenService();
     private readonly sender = new Sender();
     private readonly s3 = new S3();
@@ -125,5 +126,14 @@ export class User {
             process.env.CRYPT_ACCESS_TOKEN_SECRET,
         );
         await this.repository.update(userId, { password: cryptPassword(data.newPassword) });
+    }
+
+    async getUserPosts(token: string): Promise<IPost[]> {
+        const { userId } = this.tokenService.getTokenData(
+            token,
+            process.env.SECRET_ACCESS_TOKEN,
+            process.env.CRYPT_ACCESS_TOKEN_SECRET,
+        );
+        return await this.postRepository.getList({ authorId: userId });
     }
 }

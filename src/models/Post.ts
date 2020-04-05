@@ -1,5 +1,5 @@
 import { Repository } from "../repository/Repository";
-import { ICreatePost, IPost } from "../entity";
+import { IComment, ICreatePost, IPost } from "../entity";
 import { postSchema } from "../schemas";
 import * as dotenv from "dotenv";
 import { FileService, S3, TokenService } from "../services";
@@ -8,11 +8,17 @@ import { Request } from "express";
 import { v4 } from "uuid";
 import * as fs from "fs";
 import { errorList } from "../errors";
+import { commentSchema } from "../schemas/commentSchema";
 
 dotenv.config({ path: ".env" });
 
 export class Post {
     private readonly repository = new Repository<IPost>("post", postSchema, "posts");
+    private readonly commentRepository = new Repository<IComment>(
+        "comment",
+        commentSchema,
+        "comments",
+    );
     private readonly tokenService = new TokenService();
     private readonly fileService = new FileService({
         maxFileSize: 1048576,
@@ -101,6 +107,12 @@ export class Post {
     }
 
     async deletePost(id: number): Promise<void> {
+        const comments = await this.commentRepository.getList({ postId: id });
+        for (let i = 0; i < comments.length; i++) {
+            await this.commentRepository.delete(comments[i].id);
+        }
+        const post = await this.repository.getOneById(id);
+        await this.s3.delete(post.background);
         await this.repository.delete(id);
     }
 }

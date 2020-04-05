@@ -9,7 +9,8 @@ const router = express.Router();
 enum Actions {
     USER = "",
     AVATAR = "/avatar",
-    PASSWORD = "/password"
+    PASSWORD = "/password",
+    POSTS = "/posts"
 }
 
 const controller = new UserController();
@@ -57,6 +58,15 @@ router.put(
     (req: Request, res: Response) => {
         const token = req.header("token");
         controller.changePassword(token, req.body, res);
+    },
+);
+
+router.get(
+    Actions.POSTS,
+    async (req, res, next) => await checkExistingUserByToken(req, res, next),
+    (req: Request, res: Response) => {
+        const token = req.header("token");
+        controller.getUserPosts(token, res);
     },
 );
 

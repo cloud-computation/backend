@@ -69,4 +69,11 @@ export class UserController {
             .then((res) => sendSuccessMessage(response, res))
             .catch((error) => sendErrorMessage(error, response));
     }
+
+    getUserPosts(token: string, response: Response): void {
+        this.user
+            .getUserPosts(token)
+            .then((res) => sendSuccessMessage(response, res))
+            .catch((error) => sendErrorMessage(error, response));
+    }
 }
