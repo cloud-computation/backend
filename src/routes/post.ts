@@ -4,7 +4,6 @@ import { PostController } from "../controllers";
 import {
     checkDeletePost,
     checkEditPost,
-    checkEditPostBackground,
     checkExistingUserByToken,
 } from "../middleware";
 
@@ -52,7 +51,6 @@ router.put(
 router.put(
     Actions.BACKGROUND,
     async (req, res, next) => await checkExistingUserByToken(req, res, next),
-    async (req, res, next) => await checkEditPostBackground(req, res, next),
     (req: Request, res: Response) => {
         controller.editPostBackground(req, res);
     },

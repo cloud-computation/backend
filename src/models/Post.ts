@@ -86,8 +86,17 @@ export class Post {
     }
 
     async editPostBackground(request: Request): Promise<void> {
+        const token = request.header("token");
+        const { userId } = this.tokenService.getTokenData(
+            token,
+            process.env.SECRET_ACCESS_TOKEN,
+            process.env.CRYPT_ACCESS_TOKEN_SECRET,
+        );
         const postId = Number(request.params.id);
         const post = await this.repository.getOneById(postId);
+        if (post.authorId !== userId) {
+            throw errorList.postCanBeEditedByOwner;
+        }
         await this.s3.delete(post.background);
         const folderName = v4();
         await this.fileService.creatDir(folderName);
@@ -101,6 +110,7 @@ export class Post {
             key: `posts/${folderName}.${type}`,
             body: bodyContent,
         });
+        await this.fileService.deleteDir(folderName);
         await this.repository.update(post.id, {
             background: `posts/${folderName}.${type}`,
         });
