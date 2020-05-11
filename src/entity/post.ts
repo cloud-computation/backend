@@ -13,6 +13,7 @@ export interface ICreatePost {
 }
 
 export interface IPostView {
+    id: string;
     postId: number;
     userAgent: string;
     ip: string;

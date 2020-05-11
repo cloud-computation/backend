@@ -40,6 +40,7 @@ export class Post {
     async getPost(request: Request): Promise<IPost> {
         const post = await this.repository.getOneById(Number(request.params.id));
         const statisticData: IPostView = {
+            id: v4(),
             ip: (request.headers["x-forwarded-for"] as string) || request.connection.remoteAddress,
             date: new Date().toISOString(),
             postId: Number(request.params.id),
