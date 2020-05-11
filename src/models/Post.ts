@@ -1,5 +1,5 @@
 import { Repository } from "../repository/Repository";
-import { IComment, ICreatePost, IPost } from "../entity";
+import { IComment, ICreatePost, IPost, IPostView } from "../entity";
 import { postSchema } from "../schemas";
 import * as dotenv from "dotenv";
 import { FileService, S3, TokenService } from "../services";
@@ -9,11 +9,13 @@ import { v4 } from "uuid";
 import * as fs from "fs";
 import { errorList } from "../errors";
 import { commentSchema } from "../schemas/commentSchema";
+import { DynamoRepository } from "../repository/DynamoRepository";
 
 dotenv.config({ path: ".env" });
 
 export class Post {
     private readonly repository = new Repository<IPost>("post", postSchema, "posts");
+    private readonly dynamoRepository = new DynamoRepository<IPostView>("cloud");
     private readonly commentRepository = new Repository<IComment>(
         "comment",
         commentSchema,
@@ -35,10 +37,22 @@ export class Post {
         }));
     }
 
-    async getPost(id: number): Promise<IPost> {
-        const post = await this.repository.getOneById(id);
+    async getPost(request: Request): Promise<IPost> {
+        const post = await this.repository.getOneById(Number(request.params.id));
+        const statisticData: IPostView = {
+            ip: (request.headers["x-forwarded-for"] as string) || request.connection.remoteAddress,
+            date: new Date().toISOString(),
+            postId: Number(request.params.id),
+            userAgent: request.headers["user-agent"],
+        };
+        await this.dynamoRepository.add(statisticData);
+        const views = await this.dynamoRepository.getList({
+            postId: Number(request.params.id),
+            ip: (request.headers["x-forwarded-for"] as string) || request.connection.remoteAddress,
+        });
         return {
             ...post,
+            views: views.length,
             background: post.background ? `${process.env.STORAGE}/${post.background}` : null,
         };
     }

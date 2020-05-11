@@ -1,10 +1,10 @@
 import { IRepository } from "./IRepository";
-import { Database } from "../services";
+import { PostgreDatabase } from "../services";
 import { Model, ModelAttributes } from "sequelize";
 import { ModelCtor } from "sequelize/types/lib/model";
 
 export class Repository<T extends object> implements IRepository<T> {
-    private readonly database = new Database();
+    private readonly database = new PostgreDatabase();
     private readonly model: ModelCtor<Model<T>>;
 
     constructor(modelName: string, schema: ModelAttributes, tableName) {

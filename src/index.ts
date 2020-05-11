@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as http from "http";
 import * as dotenv from "dotenv";
-import { Database } from "./services";
+import { PostgreDatabase } from "./services";
 import { auth, comment, post, user } from "./routes";
 import { NextFunction, Request, Response } from "express";
 import { corsMiddleware, errorLogger } from "./middleware";
@@ -9,7 +9,7 @@ import { APIError } from "./errors";
 
 const app = express();
 const server = http.createServer(app);
-const database = new Database();
+const database = new PostgreDatabase();
 
 database.connect();
 dotenv.config({ path: ".env" });

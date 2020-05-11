@@ -35,7 +35,7 @@ router.post(
 router.get(
     Actions.POST_ID,
     (req: Request, res: Response) => {
-        controller.getPost(Number(req.params.id), res);
+        controller.getPost(req, res);
     },
 );
 

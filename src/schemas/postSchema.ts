@@ -12,4 +12,5 @@ export const postSchema: ModelAttributes = {
     title: { type: sequelize.STRING },
     text: { type: sequelize.STRING },
     background: { type: sequelize.STRING },
+    views: { type: sequelize.NUMBER },
 };

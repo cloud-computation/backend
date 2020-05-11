@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 
 dotenv.config({ path: ".env" });
 
-export class Database {
+export class PostgreDatabase {
     private readonly instance = new Sequelize(
         process.env.DATABASE_NAME,
         process.env.DATABASE_USERNAME,

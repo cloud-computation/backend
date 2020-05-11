@@ -14,9 +14,9 @@ export class PostController {
             .catch((error) => sendErrorMessage(error, response));
     }
 
-    getPost(id: number, response: Response): void {
+    getPost(request: Request, response: Response): void {
         this.post
-            .getPost(id)
+            .getPost(request)
             .then((res) => sendSuccessMessage(response, res))
             .catch((error) => sendErrorMessage(error, response));
     }

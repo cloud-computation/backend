@@ -1,7 +1,7 @@
-import * as AWS from "aws-sdk";
 import * as dotenv from "dotenv";
 import { PutObjectRequest } from "aws-sdk/clients/s3";
 import { errorList } from "../errors";
+import { AWS } from "./AWS";
 
 dotenv.config({ path: ".env" });
 
@@ -11,13 +11,7 @@ export interface IUploadFileData {
 }
 
 export class S3 {
-    private readonly credentials = new AWS.Credentials({
-        accessKeyId: process.env.AWS_ID,
-        secretAccessKey: process.env.AWS_SECRET,
-    });
-    private readonly s3 = new AWS.S3({
-        credentials: this.credentials,
-    });
+    private readonly aws = new AWS();
 
     async upload(data: IUploadFileData): Promise<void> {
         const params: PutObjectRequest = {
@@ -26,7 +20,7 @@ export class S3 {
             Body: data.body,
             ContentEncoding: "base64",
         };
-        await this.s3.upload(params, (err, sendData) => {
+        await this.aws.getS3().upload(params, (err, sendData) => {
             if (err) {
                 throw errorList.UploadError;
             }
@@ -34,7 +28,7 @@ export class S3 {
     }
 
     async delete(key: string): Promise<void> {
-        await this.s3.deleteObject(
+        await this.aws.getS3().deleteObject(
             {
                 Bucket: process.env.BUCKET,
                 Key: key,
