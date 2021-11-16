@@ -33,7 +33,7 @@
     "@types/rimraf": "^3.0.0",
     "@types/sequelize": "^4.28.8",
     "@types/uuid": "^7.0.2",
-    "aws-sdk": "^2.651.0",
+    "aws-sdk": "^2.814.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "del-cli": "^3.0.0",
